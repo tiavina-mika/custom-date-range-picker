@@ -34,25 +34,6 @@ const useStyles = makeStyles({
 });
 const Dialog = ({ error, onClick, begin, end, formatDate, onChange, open, onSubmit, onCancel, onInputChange }) => {
   const classes = useStyles();
-  // const [beginInput, setBeginInput] = useState(false);
-  // const [endInput, setEndInput] = useState(false);
-  // const [error, setError] = useState('');
-
-  // const handleChange = (name, value) => {
-  // // console.log('format', format(value, 'MM/dd/yyyy'))
-  // // console.log('isValid', isValid(new Date(value)))
-  // // console.log('format', format(new Date(value), 'MM/dd/yyyy'))
-  //   if (!isValid(new Date(value))) {
-  //     setError('Date Invalid');
-  //     return;
-  //   }
-  //   if (name === "start") setBeginInput(format(new Date(value), 'MM/dd/yyyy'));
-  //   if (name === "end") setEndInput(format(new Date(value), 'MM/dd/yyyy'));
-  // }
-  // console.log('error', error)
-  // console.log('endInput', endInput)
-  // console.log('beginInput', beginInput)
-
 
   return (
     <Box display="flex" justifyContent="center">
