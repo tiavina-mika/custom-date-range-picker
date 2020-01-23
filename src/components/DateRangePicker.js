@@ -110,7 +110,7 @@ const useStyles = makeStyles(theme => {
 })
 
 const DateRangePicker = ({
-  date, onChange, value,
+  date, onChange, value, onClick,
   ...props}) => {
   const utils = useUtils();
   const [begin, setBegin] = useState(value[0]);
@@ -129,15 +129,24 @@ const DateRangePicker = ({
     return cloneElement(dayComponent, {
       onClick: e => {
         e.stopPropagation();
-        if (!begin) setBegin(day);
+        if (!begin) {
+          setBegin(day)
+          onClick('begin', day)
+        }
         else if (!end) {
           if (utils.isBeforeDay(day, begin)) {
+            onClick('begin', begin)
+            onClick('end', day)
+
             setEnd(begin);
             setBegin(day);
           } else {
             setEnd(day);
+            onClick('end', day)
           }
         } else {
+          onClick('begin', day)
+
           setBegin(day);
           setEnd(undefined);
         }
@@ -166,7 +175,7 @@ const DateRangePicker = ({
       <DatePicker
         {...props}
         autoOk
-        openTo="date"
+        // openTo="date"
         renderDay={renderDay}     
       />
     </>

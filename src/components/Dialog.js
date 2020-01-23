@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import DateRangePicker from "./DateRangePicker";
 import Button from '@material-ui/core/Button';
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     backgroundColor: '#E0E0E0'
   }
 });
-const Dialog = ({ begin, end, formatDate, onChange, open, onSubmit, onCancel, onInputChange }) => {
+const Dialog = ({ error, onClick, begin, end, formatDate, onChange, open, onSubmit, onCancel, onInputChange }) => {
   const classes = useStyles();
   // const [beginInput, setBeginInput] = useState(false);
   // const [endInput, setEndInput] = useState(false);
@@ -64,28 +64,29 @@ const Dialog = ({ begin, end, formatDate, onChange, open, onSubmit, onCancel, on
           borderRadius={5}
         >
           {/* Header */}
-          <Box 
-            display="flex" 
-            justifyContent="space-between"
-            p={1} 
-            className={classes.header}>
-              <DateInput
-                  value={begin}
-                  formatDate={formatDate}
-                  placeholder="Start Date"
-                  active={open && !begin}
-                  inputName="start"
-                  onChange={onInputChange}
-                  first
-              />
-              <DateInput
-                  value={end}
-                  formatDate={formatDate}
-                  placeholder="End Date"
-                  active={begin}
-                  onChange={onInputChange}
-                  inputName="end"
-              />
+          <Box p={1} className={classes.header}>
+              <Box display="flex"  justifyContent="space-between">
+                <DateInput
+                    value={begin}
+                    formatDate={formatDate}
+                    placeholder="Start Date"
+                    active={open && !begin}
+                    inputName="start"
+                    onChange={onInputChange}
+                    first
+                />
+                <DateInput
+                    value={end}
+                    formatDate={formatDate}
+                    placeholder="End Date"
+                    active={begin}
+                    onChange={onInputChange}
+                    inputName="end"
+                />
+              </Box>
+              {error &&
+                <Box display="flex" justifyContent="center" pt={0.5} color="red">{error} </Box>
+              }
             </Box>
             
           {/* Body */}
@@ -93,6 +94,7 @@ const Dialog = ({ begin, end, formatDate, onChange, open, onSubmit, onCancel, on
             <DateRangePicker
               variant="static"
               disableToolbar
+              onClick={onClick}
               disableFuture
               value={[]}
               open={open}

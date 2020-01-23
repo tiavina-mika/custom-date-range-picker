@@ -4,8 +4,8 @@ import Box from '@material-ui/core/Box';
 import SelectDate from './components/SelectDate';
 import Dialog from './components/Dialog';
 import format from "date-fns/format";
-import isValid from "date-fns/isValid";
-import isEqual from "date-fns/isEqual";
+import parseISO from "date-fns/parseISO";
+
 const dateFormat = "MMM do yyyy";
 
 const App = () => {
@@ -15,12 +15,7 @@ const App = () => {
 
   const [beginInput, setBeginInput] = useState(false);
   const [endInput, setEndInput] = useState(false);
-  const [clicked, setClicked] = useState(false);
   const [error, setError] = useState('');
-
-  // console.log('error', error)
-  // console.log('endInput', endInput)
-  // console.log('beginInput', beginInput)
 
   const utils = useUtils();
 
@@ -30,18 +25,15 @@ const App = () => {
   const handleChange = values => {
     setBegin(values.begin);
     setEnd(values.end);
-    setClicked(!clicked);
+  }
+
+  const handleClick = (name, day) => {
+    if (name === "begin") setBeginInput(day);
+    if (name === "end") setEndInput(day);
   }
 
   
   const handleInputChange = (name, value) => {
-    // console.log('format', format(value, 'MM/dd/yyyy'))
-    // console.log('isValid', isValid(new Date(value)))
-    // console.log('format', format(new Date(value), 'MM/dd/yyyy'))
-      if (!isValid(new Date(value))) {
-        setError('Date Invalid');
-        return;
-      }
       const formattedValue = format(new Date(value), 'MM/dd/yy')
       if (name === "start") setBeginInput(new Date(formattedValue));
       if (name === "end") setEndInput(new Date(formattedValue));
@@ -50,16 +42,17 @@ const App = () => {
   const handleSubmit = () => {
     let startDateString = begin.toISOString();
     let endDateString = end.toISOString();
-    
-    // if (begin) console.log("begin", begin.toISOString());
-    // if (beginInput) console.log("beginInput", new Date(beginInput).toISOString());
-    // if (endInput) console.log("endInput", endInput);
-    // if (end) console.log("end", end);
 
-    if (beginInput && !clicked) startDateString = new Date(beginInput).toISOString();
-    if (endInput && !clicked) endDateString = new Date(endInput).toISOString();
+    if (beginInput) startDateString = new Date(beginInput).toISOString();
+    if (endInput) endDateString = new Date(endInput).toISOString();
+
+    if (utils.isBefore(parseISO(endDateString), parseISO(startDateString))) {
+      setError('Start date must be before end date');
+      return;
+    }
+    setError('');
     console.log("startDateString", startDateString);
-    console.log("endDateString", endDateString);
+    console.log("endDateString",endDateString);
     setOpen(false);
   }
 
@@ -69,30 +62,22 @@ const App = () => {
     setOpen(false);
   }
 
-  // console.log('isEqual', isEqual(beginInput, begin))
-  // console.log('endInput', endInput)
-  // console.log('beginInput', beginInput)
-  // console.log('begin', begin)
-  // console.log('end', end)
-
   return (
       <Box bgcolor="#00132C" p={3} height="100vh">
           <Box display="flex" justifyContent="center" p={2}>
             <SelectDate 
                 begin={beginInput || begin}
                 end={endInput || end}
-                // begin={begin}
-                // end={end}
                 open={open}
                 placeholder="From"
                 onClick={handleOpen}
                 formatDate={formatDate}
             />
           </Box>
-          {/* { open && ( */}
+          { open && (
             <Dialog 
+                error={error}
                 formatDate={formatDate}
-                onClick={handleOpen}
                 open={open}
                 onChange={handleChange}
                 begin={beginInput || begin}
@@ -100,10 +85,9 @@ const App = () => {
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 onInputChange={handleInputChange}
-                // begin={begin}
-                // end={end}
+                onClick={handleClick}
             />
-          {/* // )} */}
+          )}
       </Box>
   );
 }

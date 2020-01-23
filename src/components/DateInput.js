@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import { useUtils } from "@material-ui/pickers";
-// import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles({
   root: {
@@ -50,17 +47,16 @@ const DateInput = ({ value, placeholder, active, first, inputName, onChange }) =
   const classes = useStyles();
   const utils = useUtils();
   const [date, setDate] = useState(undefined);
-  const formatDate = val => utils.format(val, 'MM/dd/yy');
 
-  useEffect(() => setDate(!value? value: formatDate(value).toString()));
+  useEffect(() =>{
+    const formatDate = val => utils.format(val, 'MM/dd/yy');
+    setDate(!value? value: formatDate(value).toString())
+  }, [utils, value]);
 
   const handleChange = e => {
-    // console.log('e', e.target.value)
     setDate(e.target.value)
     onChange(inputName, e.target.value)
   }
-  // console.log('value', value)
-  // console.log('date', date)
 
   return (
       <Box 
