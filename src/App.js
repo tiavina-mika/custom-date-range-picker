@@ -40,9 +40,11 @@ const App = () => {
   }
 
   const handleSubmit = () => {
-    let startDateString = begin.toISOString();
-    let endDateString = end.toISOString();
+    let startDateString;
+    let endDateString;
 
+    if (begin) startDateString = begin.toISOString();
+    if (end) endDateString = end.toISOString();
     if (beginInput) startDateString = new Date(beginInput).toISOString();
     if (endInput) endDateString = new Date(endInput).toISOString();
 

@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { makeStyles, fade } from "@material-ui/core/styles";
 import DateInput from './DateInput';
-// import format from "date-fns/format";
-// import isValid from "date-fns/isValid";
 
 const useStyles = makeStyles({
   header: {
